@@ -34,12 +34,12 @@ class JunwoosPlayer(Player):
 
     def score(self, board):
         heights = self.get_heights(board)
-        max_height = max(heights) *0.06 
+        max_height = max(heights) *0.13 
 
         score =-max_height 
 
         num_holes = sum(max_height + h for h in heights)
-        hole_penalty = -num_holes *100  # Adjust the penalty weight as needed
+        hole_penalty = -num_holes *10  # Adjust the penalty weight as needed
         score += hole_penalty
 
         num_cleared_lines = board.clean()
