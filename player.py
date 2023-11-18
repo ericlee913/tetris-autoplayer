@@ -31,22 +31,41 @@ class JunwoosPlayer(Player):
             heights[x] = max(heights[x], board.height - y)
         return heights
 
+    def calculate_lines_above_holes(self, board, heights):
+        total_lines = 0
+        for x in range(board.width):
+            hole_height = heights[x]
+            for y in range(hole_height + 1, board.height):
+                if (x, y) not in board.cells:
+                    break  # Stop when an empty space is encountered
+                total_lines += 1
+        return total_lines
+
 
     def score(self, board):
+        weight_max_height=0.13
+        weight_hole_penalty=21
+        weight_num_cleared_lines= 100
+        weight_above_holes = 3
+        weight_bumpiness = 2
+
         heights = self.get_heights(board)
-        max_height = max(heights) *0.13 
+        max_height = max(heights) * weight_max_height 
 
         score =-max_height 
 
         num_holes = sum(max_height + h for h in heights)
-        hole_penalty = -num_holes *10  # Adjust the penalty weight as needed
+        hole_penalty = -num_holes * weight_hole_penalty  # Adjust the penalty weight as needed
         score += hole_penalty
 
         num_cleared_lines = board.clean()
-        score += num_cleared_lines * 100
+        score += num_cleared_lines * weight_num_cleared_lines
 
-        #bumpiness = sum(abs(heights[i] - heights[i + 1]) for i in range(board.width-1))
-        #score -= bumpiness * 10
+        lines_above_holes = self.calculate_lines_above_holes(board, heights)
+        score += lines_above_holes * weight_above_holes
+
+        bumpiness = sum(abs(heights[i] - heights[i + 1]) for i in range(board.width-1))
+        score -= bumpiness * weight_bumpiness
 
         return score
 
