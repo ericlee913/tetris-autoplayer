@@ -34,7 +34,21 @@ class JunwoosPlayer(Player):
 
     def score(self, board):
         heights = self.get_heights(board)
-        return -max(heights)
+        max_height = max(heights)
+
+        score =-max_height
+
+        #num_holes = sum(max_height - h for h in heights)
+        #score -= num_holes
+
+        num_cleared_lines = board.clean()
+        score += num_cleared_lines * 100
+
+        #bumpiness = sum(abs(heights[i] - heights[i + 1]) for i in range(board.width - 1))
+        #score -= bumpiness
+
+        return score
+
 
     
     def move_to_target(self, board, target_x, target_r):
