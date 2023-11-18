@@ -38,14 +38,13 @@ class JunwoosPlayer(Player):
 
         score =-max_height
 
-        #num_holes = sum(max_height - h for h in heights)
-        #score -= num_holes
+        num_holes = sum(max_height + h for h in heights)
+        hole_penalty = -num_holes * 10 # Adjust the penalty weight as needed
+        score += hole_penalty
+
 
         num_cleared_lines = board.clean()
-        score += num_cleared_lines * 100
-
-        #bumpiness = sum(abs(heights[i] - heights[i + 1]) for i in range(board.width - 1))
-        #score -= bumpiness
+        score += num_cleared_lines * 10000
 
         return score
 
