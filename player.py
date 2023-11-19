@@ -41,13 +41,30 @@ class JunwoosPlayer(Player):
                 total_lines += 1
         return total_lines
 
+    def clearingBlocks(self,board):
+
+        
+        Blockscleared = 0
+        print(Blockscleared)
+        if Blockscleared==10:
+            return 1
+        elif Blockscleared==20:
+            return 3
+        elif Blockscleared == 30:
+            return 5
+        elif Blockscleared == 40:
+            return 10
+        else :
+            return 0
+        
+
 
     def score(self, board):
-        weight_max_height=0.13
-        weight_hole_penalty=21
-        weight_num_cleared_lines= 100
-        weight_above_holes = 3
-        weight_bumpiness = 2
+        weight_max_height=0
+        weight_hole_penalty=100
+        weight_num_cleared_lines= 0
+        weight_above_holes = 0
+        weight_bumpiness = 10
 
         heights = self.get_heights(board)
         max_height = max(heights) * weight_max_height 
@@ -58,8 +75,8 @@ class JunwoosPlayer(Player):
         hole_penalty = -num_holes * weight_hole_penalty  # Adjust the penalty weight as needed
         score += hole_penalty
 
-        num_cleared_lines = board.clean()
-        score += num_cleared_lines * weight_num_cleared_lines
+        num_cleared_lines = self.clearingBlocks(board)
+        score += num_cleared_lines * weight_num_cleared_lines 
 
         lines_above_holes = self.calculate_lines_above_holes(board, heights)
         score += lines_above_holes * weight_above_holes
