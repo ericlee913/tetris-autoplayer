@@ -42,39 +42,25 @@ class JunwoosPlayer(Player):
         return total_lines
 
 
-
-    #def clearingBlocks(self,board):
-
-        Blockscleared = len(board.old_cells) - len(board.new_cells)
-        print(len(board.old.cells))
-        print(len(board.new_cells))
-        if Blockscleared==10:
-            return 1
-        elif Blockscleared==20:
-            return 3
-        elif Blockscleared == 30:
-            return 5
-        elif Blockscleared == 40:
-            return 10
-        else :
-            return 0
         
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
-
+        print(cells_diff)
         if cells_diff == -6:
-            return 1
+            return 2
         elif cells_diff == -16:
-            return 4
+            return 10
         elif cells_diff == -26:
-            return 16
+            return 200
         elif cells_diff == 64:
-            return 64
+            return 99999
+        else:
+            return 0
 
     def score(self, board):
         weight_max_height= 0.8
         weight_hole_penalty= 11
-        weight_num_cleared_lines= 1000
+        weight_num_cleared_lines= 100
         weight_above_holes = 0.1
         weight_bumpiness = 1.8
 
@@ -88,11 +74,10 @@ class JunwoosPlayer(Player):
             for y in range(heights[x] -1,-1,-1):
                 if (x,board.height -y -1) not in board.cells:
                     num_holes += 1
-        print (num_holes)
         score -= weight_hole_penalty * num_holes
 
-        #num_cleared_lines = self.lines_cleared()
-        #score += num_cleared_lines * weight_num_cleared_lines 
+        num_cleared_lines = self.lines_cleared()
+        score += num_cleared_lines * weight_num_cleared_lines 
 
         lines_above_holes = self.calculate_lines_above_holes(board, heights)
         score += lines_above_holes * weight_above_holes
@@ -135,9 +120,9 @@ class JunwoosPlayer(Player):
         for r in range(4):
             for x in range(board.width - (board.falling.right - board.falling.left)):
                 b = board.clone()
-                #self.old_cells = len(board.cells)
+                self.old_cells = len(b.cells)
                 moves = self.move_to_target(b, x, r)
-                #self.new_cells = len(board.cells)
+                self.new_cells = len(b.cells)
                 possibilities.append((self.score(b), moves))
         _, moves = max(possibilities, key=lambda x: x[0])
         return moves
