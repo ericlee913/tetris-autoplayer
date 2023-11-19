@@ -47,20 +47,20 @@ class JunwoosPlayer(Player):
         cells_diff = self.new_cells - self.old_cells
         print(cells_diff)
         if cells_diff == -6:
-            return 2
+            return 25
         elif cells_diff == -16:
-            return 10
+            return 100
         elif cells_diff == -26:
-            return 200
+            return 400
         elif cells_diff == 64:
-            return 99999
+            return 1600
         else:
             return 0
 
     def score(self, board):
         weight_max_height= 0.8
         weight_hole_penalty= 11
-        weight_num_cleared_lines= 100
+        weight_num_cleared_lines= 1
         weight_above_holes = 0.1
         weight_bumpiness = 1.8
 
