@@ -64,7 +64,7 @@ class JunwoosPlayer(Player):
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -6:
-            return 2
+            return 1
         elif cells_diff == -16:
             return 3
         elif cells_diff == -26:
