@@ -50,7 +50,7 @@ class JunwoosPlayer(Player):
         elif cells_diff == -16:
             return 2.5
         elif cells_diff == -26:
-            return 7,5
+            return 7.5
         elif cells_diff == 64:
             return 30
         else:
