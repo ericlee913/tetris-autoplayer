@@ -75,12 +75,12 @@ class JunwoosPlayer(Player):
             return 0
 
     def score(self, board):
-        weight_max_height= 0.5
+        weight_max_height= 0.7
         weight_hole_penalty= 20
         weight_num_cleared_lines= 1
         weight_above_holes = -2
-        weight_bumpiness = 2.9
-        weight_well_bonus = 1.7
+        weight_bumpiness = 2.5
+        weight_well_bonus = 1.5
 
         heights = self.get_heights(board)
         max_height = max(heights) * weight_max_height 
