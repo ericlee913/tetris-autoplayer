@@ -66,17 +66,17 @@ class JunwoosPlayer(Player):
         if cells_diff == -6:
             return 2
         elif cells_diff == -16:
-            return 2
+            return 3
         elif cells_diff == -26:
             return 5
         elif cells_diff == 64:
-            return 5
+            return 7
         else:
             return 0
 
     def score(self, board):
         weight_max_height= 1
-        weight_hole_penalty= 25
+        weight_hole_penalty= 22
         weight_num_cleared_lines= 1
         weight_above_holes = -3
         weight_bumpiness = 4
