@@ -70,7 +70,7 @@ class JunwoosPlayer(Player):
         elif cells_diff == -26:
             return 9
         elif cells_diff == 64:
-            return 40
+            return 16
         else:
             return 0
 
