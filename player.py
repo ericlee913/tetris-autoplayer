@@ -41,7 +41,25 @@ class JunwoosPlayer(Player):
                 total_lines += 1
         return total_lines
 
+    
+    def calculate_well_bonus(self, board):
+        well_bonus = 0
+        for x in range(board.width):
+            well_depth = self.calculate_well_depth(board, x)
+            well_bonus += well_depth
 
+        return well_bonus
+
+    def calculate_well_depth(self, board, x):
+        # Calculate the depth of a well at column x
+        well_depth = 0
+        for y in range(board.height - 2, -1, -1):
+            if (x, y) not in board.cells and (x - 1, y) in board.cells and (x + 1, y) in board.cells:
+                well_depth += 1
+            else:
+                break
+
+        return well_depth
         
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
@@ -58,15 +76,19 @@ class JunwoosPlayer(Player):
 
     def score(self, board):
         weight_max_height= 0.7
-        weight_hole_penalty= 13
-        weight_num_cleared_lines= 1.3
-        weight_above_holes = -2.2
+        weight_hole_penalty= 14
+        weight_num_cleared_lines= 1
+        weight_above_holes = -1.6
         weight_bumpiness = 1.8
+        weight_well_bonus = 1.7
 
         heights = self.get_heights(board)
         max_height = max(heights) * weight_max_height 
 
         score = -max_height 
+
+        well_bonus = self.calculate_well_bonus(board)
+        score += well_bonus * weight_well_bonus
 
         num_holes =0 
         for x in range (board.width):
