@@ -47,13 +47,13 @@ class JunwoosPlayer(Player):
         cells_diff = self.new_cells - self.old_cells
         print(cells_diff)
         if cells_diff == -6:
-            return 25
+            return 1
         elif cells_diff == -16:
-            return 100
+            return 4
         elif cells_diff == -26:
-            return 400
+            return 16
         elif cells_diff == 64:
-            return 1600
+            return 64
         else:
             return 0
 
