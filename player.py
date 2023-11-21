@@ -1,4 +1,4 @@
-from board import Direction, Rotation, Action
+from board import Direction, Rotation, Action, Shape
 from random import Random
 import time
 
@@ -64,13 +64,13 @@ class JunwoosPlayer(Player):
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -6:
-            return 100
+            return 300
         elif cells_diff == -16:
-            return 400
+            return 600
         elif cells_diff == -26:
             return 1000
         elif cells_diff == -36:
-            return 100000
+            return 100000000
         else:
             return 0
 
@@ -122,10 +122,10 @@ class JunwoosPlayer(Player):
             has_landed = board.rotate(Rotation.Clockwise)
             target_r -= 1
         
-        while not has_landed and target_x > board.falling.left:
+        while not has_landed and target_x > board.falling.left  :
             moves.append(Direction.Right)
             has_landed = board.move(Direction.Right)
-        while not has_landed and target_x < board.falling.left:
+        while not has_landed and target_x < board.falling.left  :
             moves.append(Direction.Left)
             has_landed = board.move(Direction.Left)
         
@@ -134,7 +134,7 @@ class JunwoosPlayer(Player):
             board.move(Direction.Drop)
         
         return moves
-    
+
 
     def choose_action(self, board):
         possibilities = []
@@ -143,8 +143,12 @@ class JunwoosPlayer(Player):
                 b = board.clone()
                 self.old_cells = len(b.cells)
                 moves = self.move_to_target(b, x, r)
-                self.new_cells = len(b.cells)
-                possibilities.append((self.score(b), moves))
+                for r2 in range(4):
+                    for x2 in range(board.width - (board.falling.right - board.falling.left)):
+                        c = b.clone()
+                        moves += self.move_to_target(c, x2, r2)
+                        self.new_cells = len(c.cells)
+                        possibilities.append((self.score(c), moves))
         _, moves = max(possibilities, key=lambda x: x[0])
         return moves
 
