@@ -1,6 +1,4 @@
-from board import Direction, Rotation, Action, Shape
-from random import Random
-import time
+from board import Direction, Rotation
 
 
 class Player:
@@ -52,22 +50,24 @@ class JunwoosPlayer(Player):
 
     def calculate_well_depth(self, board, x):
         well_depth = 0
-        for y in range(board.height - 2, -1, -1):
-            if (x, y) not in board.cells and (x - 1, y) in board.cells and (x + 1, y) in board.cells:
+        for y in range(board.height , -1, -1):
+            if max(self.get_heights(board)) >= 12:
+                well_depth =0 #if the well is too deep,it will return 0 so that the well can be cleared faster
+                break
+            elif (x, y) not in board.cells and (x - 1, y) in board.cells and (x + 1, y) in board.cells and (x+9,y) in board.cells and (x-9,y) in board.cells and (x-8,y) in board.cells and (x+8,y) in board.cells:
                 well_depth += 1
             else:
                 break
-
         return well_depth
         
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -2:
-            return 50
+            return -900
         elif cells_diff == -12:
-            return 100
+            return -600
         elif cells_diff == -22:
-            return 400
+            return -300
         else:
             return 0
         
@@ -79,18 +79,19 @@ class JunwoosPlayer(Player):
             return 0
 
     def score(self, board):
-        weight_max_height= -50
-        weight_hole_penalty= 1400
-        weight_num_cleared_lines= 0
-        weight_fourlines_cleared = 0
-        weight_above_holes = 20
-        weight_bumpiness = 300
-        weight_well_bonus = 40
+        weight_max_height= -20
+        weight_hole_penalty= 1700
+        weight_num_cleared_lines= 1
+        weight_fourlines_cleared = 2000
+        weight_above_holes = 15
+        weight_bumpiness = 385
+        weight_well_bonus = 150
 
         heights = self.get_heights(board)
-        max_height = max(heights) * weight_max_height 
+        max_height = max(heights)  
+        height_penalty= max_height * weight_max_height
 
-        score =+ max_height 
+        score =+ height_penalty 
 
         well_bonus = self.calculate_well_bonus(board)
         score += well_bonus * weight_well_bonus
@@ -146,17 +147,17 @@ class JunwoosPlayer(Player):
 
     def choose_action(self, board):
         possibilities = []
-        for r in range(4):
+        for rotation in range(4):
             for x in range(board.width - (board.falling.right - board.falling.left)):
-                b = board.clone()
-                self.old_cells = len(b.cells)
-                moves = self.move_to_target(b, x, r)
-                for r2 in range(4):
+                clone1 = board.clone()
+                self.old_cells = len(clone1.cells)
+                moves = self.move_to_target(clone1, x, rotation)
+                for rotation2 in range(4):
                     for x2 in range(board.width - (board.falling.right - board.falling.left)):
-                        c = b.clone()
-                        moves += self.move_to_target(c, x2, r2)
-                        self.new_cells = len(c.cells)
-                        possibilities.append((self.score(c), moves))
+                        clone2 = clone1.clone()
+                        moves += self.move_to_target(clone2, x2, rotation2)
+                        self.new_cells = len(clone2.cells)
+                        possibilities.append((self.score(clone2), moves))
         _, moves = max(possibilities, key=lambda x: x[0])
         return moves
 
