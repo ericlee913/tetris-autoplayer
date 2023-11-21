@@ -63,11 +63,11 @@ class JunwoosPlayer(Player):
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -2:
-            return -150
+            return -900
         elif cells_diff == -12:
-            return -100
+            return -600
         elif cells_diff == -22:
-            return 1
+            return -300
         else:
             return 0
         
