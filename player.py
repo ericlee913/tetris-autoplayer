@@ -84,8 +84,8 @@ class JunwoosPlayer(Player):
         weight_hole_penalty= 500
         weight_num_cleared_lines= 0
         weight_fourlines_cleared = 0
-        weight_above_holes = 40
-        weight_bumpiness = 30
+        weight_above_holes = 10
+        weight_bumpiness = 60
         weight_well_bonus = 20
 
         heights = self.get_heights(board)
