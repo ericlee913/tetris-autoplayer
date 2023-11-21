@@ -44,7 +44,7 @@ class JunwoosPlayer(Player):
     
     def calculate_well_bonus(self, board):
         well_bonus = 0
-        for x in range(board.width-8):
+        for x in range(board.width):
             well_depth = self.calculate_well_depth(board, x)
             well_bonus += well_depth
 
@@ -80,7 +80,7 @@ class JunwoosPlayer(Player):
 
     def score(self, board):
         weight_max_height= -50
-        weight_hole_penalty= 1420
+        weight_hole_penalty= 1400
         weight_num_cleared_lines= 0
         weight_fourlines_cleared = 0
         weight_above_holes = 20
