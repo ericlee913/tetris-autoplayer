@@ -51,7 +51,7 @@ class JunwoosPlayer(Player):
     def calculate_well_depth(self, board, x):
         well_depth = 0
         for y in range(board.height , -1, -1):
-            if max(self.get_heights(board)) >= 12:
+            if max(self.get_heights(board)) > 12:
                 well_depth =0 #if the well is too deep,it will return 0 so that the well can be cleared faster
                 break
             elif (x, y) not in board.cells and (x - 1, y) in board.cells and (x + 1, y) in board.cells and (x+9,y) in board.cells and (x-9,y) in board.cells and (x-8,y) in board.cells and (x+8,y) in board.cells:
@@ -80,12 +80,12 @@ class JunwoosPlayer(Player):
 
     def score(self, board):
         weight_max_height= -20
-        weight_hole_penalty= 1700
+        weight_hole_penalty= 1705
         weight_num_cleared_lines= 1
-        weight_fourlines_cleared = 2000
+        weight_fourlines_cleared = 2200
         weight_above_holes = 15
         weight_bumpiness = 385
-        weight_well_bonus = 55
+        weight_well_bonus = 300
 
         heights = self.get_heights(board)
         max_height = max(heights)  
