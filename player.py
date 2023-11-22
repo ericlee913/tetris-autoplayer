@@ -1,4 +1,5 @@
 from board import Direction, Rotation
+import time
 
 
 class Player:
@@ -38,36 +39,15 @@ class JunwoosPlayer(Player):
                     break  
                 total_lines += 1
         return total_lines
-
-    
-    def calculate_well_bonus(self, board):
-        well_bonus = 0
-        for x in range(board.width):
-            well_depth = self.calculate_well_depth(board, x)
-            well_bonus += well_depth
-
-        return well_bonus
-
-    def calculate_well_depth(self, board, x):
-        well_depth = 0
-        for y in range(board.height , -1, -1):
-            if max(self.get_heights(board)) > 12:
-                well_depth =0 #if the well is too deep,it will return 0 so that the well can be cleared faster
-                break
-            elif (x, y) not in board.cells and (x - 1, y) in board.cells and (x + 1, y) in board.cells and (x+9,y) in board.cells and (x-9,y) in board.cells and (x-8,y) in board.cells and (x+8,y) in board.cells:
-                well_depth += 1
-            else:
-                break
-        return well_depth
         
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -2:
-            return -900
+            return -950
         elif cells_diff == -12:
-            return -600
+            return -650
         elif cells_diff == -22:
-            return -300
+            return -350
         else:
             return 0
         
@@ -79,22 +59,18 @@ class JunwoosPlayer(Player):
             return 0
 
     def score(self, board):
-        weight_max_height= -20
-        weight_hole_penalty= 1705
+        weight_max_height= -15
+        weight_hole_penalty= 1700
         weight_num_cleared_lines= 1
-        weight_fourlines_cleared = 2200
-        weight_above_holes = 15
-        weight_bumpiness = 385
-        weight_well_bonus = 350
+        weight_fourlines_cleared = 2300
+        weight_above_holes = 20
+        weight_bumpiness = 250
 
         heights = self.get_heights(board)
         max_height = max(heights)  
         height_penalty= max_height * weight_max_height
 
         score =+ height_penalty 
-
-        well_bonus = self.calculate_well_bonus(board)
-        score += well_bonus * weight_well_bonus
 
         fourlinebonus= self.fourlines_cleared()
         score += weight_fourlines_cleared * fourlinebonus
