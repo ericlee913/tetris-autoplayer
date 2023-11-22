@@ -85,7 +85,7 @@ class JunwoosPlayer(Player):
         weight_fourlines_cleared = 2200
         weight_above_holes = 15
         weight_bumpiness = 385
-        weight_well_bonus = 300
+        weight_well_bonus = 250
 
         heights = self.get_heights(board)
         max_height = max(heights)  
