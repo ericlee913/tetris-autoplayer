@@ -1,6 +1,4 @@
 from board import Direction, Rotation
-import time
-
 
 class Player:
     def choose_action(self, board):
@@ -43,7 +41,7 @@ class JunwoosPlayer(Player):
     def lines_cleared(self):
         cells_diff = self.new_cells - self.old_cells
         if cells_diff == -2:
-            return -975
+            return -950
         elif cells_diff == -12:
             return -650
         elif cells_diff == -22:
@@ -59,12 +57,12 @@ class JunwoosPlayer(Player):
             return 0
 
     def score(self, board):
-        weight_max_height= -20
+        weight_max_height= -15
         weight_hole_penalty= 1700
         weight_num_cleared_lines= 1
         weight_fourlines_cleared = 2300
-        weight_above_holes = 22
-        weight_bumpiness = 230
+        weight_above_holes = 20
+        weight_bumpiness = 245
 
         heights = self.get_heights(board)
         max_height = max(heights)  
@@ -77,7 +75,7 @@ class JunwoosPlayer(Player):
 
         num_holes =0 
         for x in range (board.width):
-            for y in range(heights[x] -1,-1,-1):
+            for y in range(heights[x],-1,-1):
                 if (x,board.height -y -1) not in board.cells:
                     num_holes += 1
         score -= weight_hole_penalty * num_holes
