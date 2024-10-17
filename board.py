@@ -388,7 +388,6 @@ class Board(Bitmap):
                 self.remove_line(line)
                 removed += 1
             line -= 1
-
         return scores[removed]
 
     def explode(self, pos):
